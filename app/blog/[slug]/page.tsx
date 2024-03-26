@@ -81,7 +81,7 @@ function formatDate(date: string) {
   return `${fullDate} (${formattedDate})`;
 }
 
-export default function Blog({ params }: BlogPageProps) {
+export default function BlogPage({ params }: BlogPageProps) {
   let post = executeBlogContentFetch().find((post) => post.slug === params.slug);
 
   if (!post) {
