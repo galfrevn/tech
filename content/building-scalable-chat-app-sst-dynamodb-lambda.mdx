@@ -1,0 +1,27 @@
+---
+title: 'Building a Scalable Chat App with SST, AWS DynamoDB, and Lambda'
+publishedAt: '2024-03-25'
+summary: 'Learn how to create a massively scalable chat application using Serverless Stack (SST), AWS DynamoDB, and AWS Lambda functions with this step-by-step guide perfect for beginners.'
+---
+
+- [Why Go Serverless?](#why-go-serverless)
+- [Performance](#performance)
+- [Opinions](#opinions)
+
+In the digital age, chat applications have become a fundamental part of our daily communication. Creating a chat app that's not only functional but also scalable can seem daunting, especially if you're new to the serverless architecture. However, with the right tools and guidance, it's entirely achievable. This guide will walk you through building a chat application using [Serverless Stack (SST)](https://sst.dev), [AWS DynamoDB](https://aws.amazon.com/es/pm/dynamodb), and [AWS Lambda](https://aws.amazon.com/es/pm/lambda) functions. Aimed at beginners, this post will break down the technicalities into simple, actionable steps, ensuring you understand every part of the process.
+
+## Why Go Serverless?
+
+Before we dive into the nuts and bolts of building our chat app, let's talk about why going serverless is a smart choice for scalable applications.
+
+- **Cost-Effectiveness:** With serverless architectures, you only pay for what you use. This can lead to significant cost savings, especially for applications with variable traffic.
+- **Scalability:** Serverless services, like AWS Lambda, automatically scale based on the demand. This means your chat app can effortlessly handle spikes in user numbers without any manual intervention.
+- **Development Speed:** Serverless frameworks, such as SST, provide a lot of out-of-the-box functionalities. This speeds up the development process, allowing you to focus on building features that matter.
+
+## Step 1: Setting Up Your Environment
+
+First things first, let's set up our development environment. You'll need an AWS account and Node.js installed on your machine. Once you have those, install the SST CLI globally using npm:
+
+```bash
+npm install -g sst
+```
