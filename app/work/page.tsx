@@ -20,7 +20,7 @@ export default function WorkPage() {
       <div className='prose prose-neutral dark:prose-invert'>
         <p>
           On a mission to build products developers <Link href='/blog/developer-experience-examples'>love</Link>, and
-          along the way, teach the next generation of developers. Here's a summary of my work so far.
+          along the way, teach the next generation of developers. Here&apos;s a summary of my work so far.
         </p>
         <hr className='my-6 border-neutral-100 dark:border-neutral-800' />
         <h2 className='font-medium text-xl mb-1 tracking-tighter'>Vercel</h2>
@@ -49,7 +49,7 @@ export default function WorkPage() {
         </ul>
         <p>
           Since I joined Vercel in 2020, Next.js active developers have grown 1000%, now at ~900k. Next.js is now a top
-          10 software project on GitHub with <Stars />. It's used by Walmart, ChatGPT, Starbucks, Okta, Datastax,
+          10 software project on GitHub with <Stars />. It&apos;s used by Walmart, ChatGPT, Starbucks, Okta, Datastax,
           Notion, and <a href='https://nextjs.org/showcase'>more</a>.
         </p>
         <hr className='my-6 border-neutral-100 dark:border-neutral-800' />

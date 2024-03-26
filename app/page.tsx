@@ -2,7 +2,6 @@ import { Icons } from '@/components/ui/icons';
 import { Badge, BadgeProps } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Grid, GridItem } from '@/components/ui/grid';
-import { Tweet } from 'react-tweet';
 
 interface SecondaryBadgeProps extends BadgeProps {}
 function SecondaryBadge({ children, ...props }: SecondaryBadgeProps) {
@@ -16,10 +15,10 @@ function SecondaryBadge({ children, ...props }: SecondaryBadgeProps) {
 export default function Home() {
   return (
     <section>
-      <h1 className='mb-8 text-2xl font-medium tracking-tighter'>hey, I'm galfrevn 👋</h1>
+      <h1 className='mb-8 text-2xl font-medium tracking-tighter'>hey, I&apos;m galfrevn 👋</h1>
 
       <span className='prose prose-neutral dark:prose-invert'>
-        I'm a frontend developer, optimist, and community builder. I currently <a>work</a> as the VP of Product at
+        I&apos;m a frontend developer, optimist, and community builder. I currently <a>work</a> as the VP of Product at
         <SecondaryBadge>
           <Icons.React size={16} stroke={1} />
           React
@@ -64,8 +63,8 @@ export default function Home() {
       </p>
       
       <p className='prose prose-neutral dark:prose-invert mt-8'>
-        Over the past decade, I've written content on my blog and newsletter. I try to keep things simple. You'll find
-        writing about technologies I'm interested in at the time, or how I'm learning and growing in my career, sharing
+        Over the past decade, I&apos;ve written content on my blog and newsletter. I try to keep things simple. You&apos;ll find
+        writing about technologies I&apos;m interested in at the time, or how I&apos;m learning and growing in my career, sharing
         knowledge along the way.
       </p>
     </section>

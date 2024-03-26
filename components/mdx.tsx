@@ -150,7 +150,8 @@ function slugify(str: string) {
 function createHeading(level: number) {
   return ({ children }: React.PropsWithChildren) => {
     let slug = slugify(children as string);
-    return React.createElement(
+
+    const component = React.createElement(
       `h${level}`,
       { id: slug },
       [
@@ -162,6 +163,8 @@ function createHeading(level: number) {
       ],
       children
     );
+
+    return component;
   };
 }
 
