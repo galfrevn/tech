@@ -1,31 +1,30 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { Tweet } from 'react-tweet';
+import { AnimatedSection, AnimatedItem } from '@/components/animated-section';
 
 export const metadata: Metadata = {
   title: 'Work',
   description: 'A summary of my work and contributions.',
 };
 
-async function Stars() {
-  let res = await fetch('https://api.github.com/repos/vercel/next.js');
-  let json = await res.json();
-  let count = Math.round(json.stargazers_count / 1000);
-  return `${count}k stars`;
-}
-
 export default function WorkPage() {
   return (
-    <section>
-      <h1 className='font-medium text-2xl mb-8 tracking-tighter'>my work</h1>
-      <div className='prose prose-neutral dark:prose-invert'>
+    <AnimatedSection>
+      <AnimatedItem>
+        <h1 className='font-medium text-2xl mb-8 tracking-tighter'>my work</h1>
+      </AnimatedItem>
+      
+      <AnimatedItem className='prose prose-neutral dark:prose-invert'>
         <p>
           Passionate about crafting high-quality software and mentoring developers, while building impactful digital
           solutions. Here&apos;s a summary of my work so far.
         </p>
+      </AnimatedItem>
 
+      <AnimatedItem>
         <hr className='my-6 border-neutral-100 dark:border-neutral-800' />
+      </AnimatedItem>
 
+      <AnimatedItem className='prose prose-neutral dark:prose-invert'>
         <h2 className='font-medium text-xl mb-1 tracking-tighter'>Mercado Libre</h2>
         <p className='text-neutral-600 dark:text-neutral-400 text-sm'>Senior Software Engineer, April 2024 – Present</p>
         <p>
@@ -33,8 +32,13 @@ export default function WorkPage() {
           experience. I ensure code quality, mentor junior developers, and implement cutting-edge technologies to keep
           the platform competitive.
         </p>
-        <hr className='my-6 border-neutral-100 dark:border-neutral-800' />
+      </AnimatedItem>
 
+      <AnimatedItem>
+        <hr className='my-6 border-neutral-100 dark:border-neutral-800' />
+      </AnimatedItem>
+
+      <AnimatedItem className='prose prose-neutral dark:prose-invert'>
         <h2 className='font-medium text-xl mb-1 tracking-tighter'>Crombie</h2>
         <p className='text-neutral-600 dark:text-neutral-400 text-sm'>
           Software Technical Leader, April 2023 – April 2024
@@ -59,16 +63,26 @@ export default function WorkPage() {
           Focused on front-end development, creating visually appealing and efficient web interfaces. Contributed to
           reusable components and improved application stability by 60%.
         </p>
-        <hr className='my-6 border-neutral-100 dark:border-neutral-800' />
+      </AnimatedItem>
 
+      <AnimatedItem>
+        <hr className='my-6 border-neutral-100 dark:border-neutral-800' />
+      </AnimatedItem>
+
+      <AnimatedItem className='prose prose-neutral dark:prose-invert'>
         <h2 className='font-medium text-xl mb-1 tracking-tighter'>Sublytics</h2>
         <p className='text-neutral-600 dark:text-neutral-400 text-sm'>Software Engineer, November 2022 – April 2023</p>
         <p>
           Collaborated remotely with a global team to develop high-quality applications. Designed and implemented
           real-time APIs with AWS and enhanced software architecture, achieving over 80% test coverage.
         </p>
-        <hr className='my-6 border-neutral-100 dark:border-neutral-800' />
+      </AnimatedItem>
 
+      <AnimatedItem>
+        <hr className='my-6 border-neutral-100 dark:border-neutral-800' />
+      </AnimatedItem>
+
+      <AnimatedItem className='prose prose-neutral dark:prose-invert'>
         <h2 className='font-medium text-xl mb-1 tracking-tighter'>Freelancer</h2>
         <p className='text-neutral-600 dark:text-neutral-400 text-sm'>Software Engineer, December 2020 – July 2021</p>
         <p>
@@ -76,7 +90,7 @@ export default function WorkPage() {
           businesses establish a strong online presence. Delivered tailored solutions and ensured high-quality project
           execution.
         </p>
-      </div>
-    </section>
+      </AnimatedItem>
+    </AnimatedSection>
   );
 }

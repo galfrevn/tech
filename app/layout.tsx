@@ -11,7 +11,7 @@ import { MainNavigation } from '@/components/navigation';
 import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
-  title: 'Valentín Galfré | Senior Software Engineer',
+  title: 'Valentín Galfré Hub',
   description:
     'Senior Software Engineer specialized in React, TypeScript and AWS. Personal portfolio and blog about software development, technology and professional experiences.',
   keywords: [
