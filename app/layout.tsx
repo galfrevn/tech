@@ -8,9 +8,12 @@ import { GeistMono as fontMono } from 'geist/font/mono';
 import { Background } from '@/components/background';
 import { MainNavigation } from '@/components/navigation';
 
+import { Analytics } from '@vercel/analytics/react';
+
 export const metadata: Metadata = {
   title: 'Valentín Galfré | Senior Software Engineer',
-  description: 'Senior Software Engineer specialized in React, TypeScript and AWS. Personal portfolio and blog about software development, technology and professional experiences.',
+  description:
+    'Senior Software Engineer specialized in React, TypeScript and AWS. Personal portfolio and blog about software development, technology and professional experiences.',
   keywords: [
     'Valentín Galfré',
     'Software Engineer',
@@ -21,7 +24,7 @@ export const metadata: Metadata = {
     'Web Development',
     'Software Development',
     'Mercado Libre',
-    'Technical Blog'
+    'Technical Blog',
   ],
   authors: [{ name: 'Valentín Galfré' }],
   creator: 'Valentín Galfré',
@@ -30,23 +33,24 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://dev.galfrevn.com',
     title: 'Valentín Galfré | Senior Software Engineer',
-    description: 'Senior Software Engineer specialized in React, TypeScript and AWS. Personal portfolio and blog about software development.',
+    description:
+      'Senior Software Engineer specialized in React, TypeScript and AWS. Personal portfolio and blog about software development.',
     siteName: 'Valentín Galfré Hub',
     images: [
       {
         url: '/images/avatar.webp',
         width: 1200,
         height: 630,
-        alt: 'Valentín Galfré'
-      }
-    ]
+        alt: 'Valentín Galfré',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Valentín Galfré | Senior Software Engineer',
     description: 'Senior Software Engineer specialized in React, TypeScript and AWS',
     images: ['/images/avatar.webp'],
-    creator: '@galfrevn'
+    creator: '@galfrevn',
   },
   robots: {
     index: true,
@@ -73,6 +77,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <MainNavigation />
           {children}
         </main>
+        <Analytics />
       </body>
     </html>
   );
