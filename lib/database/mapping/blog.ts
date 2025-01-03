@@ -27,7 +27,9 @@ function parseFrontmatter(fileContent: string) {
 }
 
 function getMDXFiles(dir: string) {
-  return fs.readdirSync(dir).filter((file) => path.extname(file) === '.mdx');
+  const files = fs.readdirSync(dir).filter((file) => path.extname(file) === '.mdx');
+
+  return files;
 }
 
 function readMDXFile(filePath: string) {
@@ -59,9 +61,11 @@ export function executeBlogContentFetch() {
   return getMDXData(path.join(process.cwd(), 'content'));
 }
 
-export function blogContentSorter(content: ReturnType<typeof executeBlogContentFetch>) {
-  return content.sort((a, b) => {
-    if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) return -1;
-    return 1;
-  });
+export function blogContentSorter(content: ReturnType<typeof executeBlogContentFetch>, quantity: number = Infinity) {
+  return content
+    .sort((a, b) => {
+      if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) return -1;
+      return 1;
+    })
+    .slice(0, quantity);
 }

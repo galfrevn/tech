@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   }
 
   let { title, publishedAt: publishedTime, summary: description, image } = post.metadata;
-  let ogImage = image ? `https://galfrevn.tech${image}` : `https://galfrevn.tech/og?title=${title}`;
+  let ogImage = image ? `https://galfrevn.com${image}` : `https://galfrevn.com/og?title=${title}`;
 
   return {
     title,
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
       description,
       type: 'article',
       publishedTime,
-      url: `https://galfrevn.tech/blog/${post.slug}`,
+      url: `https://galfrevn.com/blog/${post.slug}`,
       images: [
         {
           url: ogImage,
@@ -102,9 +102,9 @@ export default function BlogPage({ params }: BlogPageProps) {
             dateModified: post.metadata.publishedAt,
             description: post.metadata.summary,
             image: post.metadata.image
-              ? `https://galfrevn.tech${post.metadata.image}`
-              : `https://galfrevn.tech/og?title=${post.metadata.title}`,
-            url: `https://galfrevn.tech/blog/${post.slug}`,
+              ? `https://galfrevn.com${post.metadata.image}`
+              : `https://galfrevn.com/og?title=${post.metadata.title}`,
+            url: `https://galfrevn.com/blog/${post.slug}`,
             author: {
               '@type': 'Person',
               name: 'Valentin Galfre',

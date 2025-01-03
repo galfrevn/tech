@@ -136,7 +136,17 @@ function Code({ children, ...props }: CodeProps) {
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
 }
 
-function slugify(str: string) {
+function slugify(str: string | Array<any>) {
+  // Handle array case by joining elements
+  if (Array.isArray(str)) {
+    str = str.map(item => {
+      if (typeof item === 'object' && item.props && item.props.children) {
+        return item.props.children;
+      }
+      return item;
+    }).join('');
+  }
+
   return str
     .toString()
     .toLowerCase()

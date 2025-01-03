@@ -1,27 +1,237 @@
 ---
-title: 'Building a Scalable Chat App with SST, AWS DynamoDB, and Lambda'
-publishedAt: '2024-03-25'
-summary: 'Learn how to create a massively scalable chat application using Serverless Stack (SST), AWS DynamoDB, and AWS Lambda functions with this step-by-step guide perfect for beginners.'
+title: 'Building a Massive Scalable Chat Application with SST, DynamoDB, and AWS Lambda'
+publishedAt: '2025-01-02'
+summary: 'Learn how to architect a scalable and resilient chat application using SST, DynamoDB, and AWS Lambda, with insights from real-world experience as a Tech Lead at Crombie.'
 ---
 
-- [Why Go Serverless?](#why-go-serverless)
-- [Performance](#performance)
-- [Opinions](#opinions)
+<Callout emoji="🚧">
+**Note:** This article is currently a work in progress. Check back soon for the complete guide!
+</Callout>
 
-In the digital age, chat applications have become a fundamental part of our daily communication. Creating a chat app that's not only functional but also scalable can seem daunting, especially if you're new to the serverless architecture. However, with the right tools and guidance, it's entirely achievable. This guide will walk you through building a chat application using [Serverless Stack (SST)](https://sst.dev), [AWS DynamoDB](https://aws.amazon.com/es/pm/dynamodb), and [AWS Lambda](https://aws.amazon.com/es/pm/lambda) functions. Aimed at beginners, this post will break down the technicalities into simple, actionable steps, ensuring you understand every part of the process.
+- [Introduction](#introduction)
+- [High-Level Architecture](#high-level-architecture)
+- [Single Table Design in DynamoDB](#single-table-design-in-dynamodb)
+- [Using AWS WebSocket API](#using-aws-websocket-api)
+- [AWS Lambda and Concurrency](#aws-lambda-and-concurrency)
+- [Implementation Details](#implementation-details)
+  - [Setting Up SST](#setting-up-sst)
 
-## Why Go Serverless?
+<Callout emoji="💬">
+**Tip:** Scalable applications are not just about the right tools but also about understanding your workload and using resources efficiently.
+</Callout>
 
-Before we dive into the nuts and bolts of building our chat app, let's talk about why going serverless is a smart choice for scalable applications.
+## Introduction
 
-- **Cost-Effectiveness:** With serverless architectures, you only pay for what you use. This can lead to significant cost savings, especially for applications with variable traffic.
-- **Scalability:** Serverless services, like AWS Lambda, automatically scale based on the demand. This means your chat app can effortlessly handle spikes in user numbers without any manual intervention.
-- **Development Speed:** Serverless frameworks, such as SST, provide a lot of out-of-the-box functionalities. This speeds up the development process, allowing you to focus on building features that matter.
+Building scalable chat applications involves handling real-time communication, persistent data storage, and efficient resource management. With my team at Crombie, I implemented a similar but larger-scale system to support millions of concurrent users. This blog provides a comprehensive guide to replicating such a system using **SST**, **DynamoDB**, and **AWS Lambda**.
 
-## Step 1: Setting Up Your Environment
+## High-Level Architecture
 
-First things first, let's set up our development environment. You'll need an AWS account and Node.js installed on your machine. Once you have those, install the SST CLI globally using npm:
+Here’s a high-level overview of the architecture:
+
+1. **Frontend:** The client communicates with WebSocket endpoints for real-time updates.
+2. **WebSocket API Gateway:** Manages WebSocket connections and routes events to AWS Lambda.
+3. **AWS Lambda:** Processes incoming messages and interacts with DynamoDB.
+4. **DynamoDB:** Stores user sessions, messages, and chat metadata using a single table design.
+
+## Single Table Design in DynamoDB
+
+### What is Single Table Design?
+
+Single table design consolidates all data models into one table, leveraging DynamoDB’s indexing and partitioning capabilities for scalability and efficiency.
+
+### Designing the Schema
+
+<Table
+  data={{
+    headers: ['PK (Partition Key)', 'SK (Sort Key)', 'Attribute'],
+    rows: [
+      ['USER#<UserID>', 'METADATA', 'User details'],
+      ['USER#<UserID>', 'MESSAGE#<Timestamp>', 'Chat messages'],
+      ['CHAT#<ChatID>', 'METADATA', 'Chat details'],
+      ['CHAT#<ChatID>', 'MESSAGE#<Timestamp>', 'Chat messages'],
+    ],
+  }}
+/>
+
+### Why Use Single Table Design?
+
+1. **Efficient Queries:** Fetch all messages for a user or chat with a single query.
+2. **Cost-Effective:** Reduces read and write operations by grouping related items together.
+3. **Scalable:** Handles high throughput with optimized access patterns.
+
+## Using AWS WebSocket API
+
+The AWS WebSocket API enables real-time communication between clients and the backend. Key components include:
+
+1. **Routes:** Define actions like `$connect`, `$disconnect`, and custom events (e.g., `sendMessage`).
+2. **Integration with Lambda:** Routes trigger Lambda functions to handle WebSocket events.
+3. **Connection Management:** Use DynamoDB to store active connections for broadcasting messages.
+
+### Example Workflow
+
+1. **Client connects to WebSocket:** Triggers `$connect` Lambda function.
+2. **Message sent by client:** Triggers `sendMessage` Lambda function.
+3. **Broadcast message:** Lambda function retrieves active connections from DynamoDB and sends messages.
+
+## AWS Lambda and Concurrency
+
+### Handling High Traffic
+
+1. **Concurrency Limits:** Set reserved concurrency for critical Lambda functions to avoid resource exhaustion.
+2. **Batch Processing:** Use DynamoDB Streams and Lambda for batch processing of messages.
+
+### Error Handling
+
+- Use **dead-letter queues (DLQs)** to capture failed events.
+- Integrate with **CloudWatch Logs** to monitor function performance.
+
+## Implementation Details
+
+Setting Up the SST Project
+Begin by setting up the SST CLI, which provides an excellent framework for building serverless applications. Install the CLI using the command:
 
 ```bash
 npm install -g sst
 ```
+
+Create a new SST project and navigate to the project directory:
+
+```bash
+npx sst create my-chat-app
+cd my-chat-app
+```
+
+This initializes a new project using the latest version of SST, setting the foundation for our application.
+
+Configuring AWS DynamoDB
+To handle the storage needs of the chat application, we will use DynamoDB. Define a DynamoDB table for storing messages in sst.config.ts:
+
+```typescript
+import { Table } from "sst/constructs";
+export default {
+  config(_input) {
+    return {
+      name: "my-chat-app",
+      region: "us-east-1",
+    };
+  },
+  stacks(app) {
+    app.stack(function StorageStack({ stack }) {
+      const table = new Table(stack, "Messages", {
+        fields: {
+          pk: "string",
+          sk: "string",
+        },
+        primaryIndex: { partitionKey: "pk", sortKey: "sk" },
+      });
+    });
+  },
+};
+```
+
+The pk field serves as the partition key, representing the chat room ID, while the sk field is the sort key, representing either a timestamp or a unique message ID. This schema ensures efficient retrieval of messages within a specific chat room.
+
+Implementing Lambda Functions
+Sending Messages
+To enable users to send messages, create a Lambda function that writes messages to the DynamoDB table. Define the function in your sst.config.ts file and grant it permissions to access the table:
+
+```typescript
+import { Function } from "sst/constructs";
+export default {
+  // ... previous config ...
+  stacks(app) {
+    app.stack(function ApiStack({ stack }) {
+      const sendMessage = new Function(stack, "SendMessage", {
+        handler: "functions/sendMessage.main",
+        environment: {
+          TABLE_NAME: process.env.TABLE_NAME,
+        },
+        permissions: ["dynamodb:PutItem"],
+      });
+    });
+  },
+};
+```
+
+Then, create the function implementation in functions/sendMessage.ts:
+
+```typescript
+import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
+const db = new DynamoDBClient({});
+export async function main(event: any) {
+  const body = JSON.parse(event.body);
+  const { chatRoomId, userId, message } = body;
+
+  const params = {
+    TableName: process.env.TABLE_NAME,
+    Item: {
+      pk: { S: chatRoomId },
+      sk: { S: new Date().toISOString() },
+      userId: { S: userId },
+      message: { S: message },
+    },
+  };
+
+  await db.send(new PutItemCommand(params));
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ status: "Message sent" }),
+  };
+}
+```
+
+This function parses the incoming request, extracts the message details, and writes them to DynamoDB.
+
+Real-Time Messaging with WebSocket
+To deliver messages in real time, integrate WebSocket. Define a WebSocket API in your sst.config.ts file:
+
+```typescript
+import { WebSocketApi } from "sst/constructs";
+export default {
+  // ... previous config ...
+  stacks(app) {
+    app.stack(function WebSocketStack({ stack }) {
+      const websocketApi = new WebSocketApi(stack, "WebSocketApi", {
+        routes: {
+          $connect: "functions/connect.main",
+          $default: "functions/default.main",
+          $disconnect: "functions/disconnect.main",
+        },
+      });
+
+      stack.addOutputs({
+        WebSocketApiEndpoint: websocketApi.url,
+      });
+    });
+  },
+};
+```
+
+Create the $connect route handler in functions/connect.ts:
+
+```typescript
+export async function main(event: any) {
+  // Logic for connection setup
+  return {
+    statusCode: 200,
+    body: "Connected",
+  };
+}
+```
+
+With this setup, users can establish WebSocket connections to receive real-time updates.
+
+## Improving Scalability and Performance
+
+To ensure the application scales effectively, consider implementing additional optimizations. DynamoDB’s Global Secondary Indexes (GSIs) can enable efficient queries for messages based on user or timestamp. Additionally, caching frequently accessed data using AWS ElastiCache can significantly reduce database load. For handling traffic spikes, configure API Gateway throttling and connection limits.
+
+Monitoring is crucial for scalability. Tools like AWS X-Ray and CloudWatch can provide deep insights into application performance, allowing you to identify bottlenecks and optimize. Finally, implementing a CI/CD pipeline with GitHub Actions or AWS CodePipeline ensures consistent and reliable deployments.
+
+By following this approach, you can build a robust, scalable chat application capable of supporting both small-scale and large-scale use cases. The combination of SST, AWS DynamoDB, and AWS Lambda ensures a modern, serverless solution optimized for real-time communication.
+
+## References
+- [SST Documentation](https://sst.dev/docs/)
+- [Amazon DynamoDB Developer Guide](https://docs.aws.amazon.com/dynamodb/)
+- [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/)
+- [API Gateway WebSocket APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-websocket-api.html)

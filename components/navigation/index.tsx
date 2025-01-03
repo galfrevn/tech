@@ -10,9 +10,6 @@ const navigationRoutes = {
   '/blog': {
     name: 'blog',
   },
-  '/guestbook': {
-    name: 'guestbook',
-  },
 };
 
 export function MainNavigation() {
