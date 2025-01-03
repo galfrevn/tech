@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://dev.galfrevn.com',
+    url: 'https://galfrevn.com',
     title: 'Valentín Galfré | Senior Software Engineer',
     description:
       'Senior Software Engineer specialized in React, TypeScript and AWS. Personal portfolio and blog about software development.',
