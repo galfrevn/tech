@@ -1,9 +1,1 @@
-{
-  "redirects": [
-    {
-      "source": "https://blog.galfrevn.com/(.*)",
-      "destination": "https://galfrevn.com/$1",
-      "permanent": true
-    }
-  ]
-}
+
