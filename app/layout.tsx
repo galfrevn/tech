@@ -71,7 +71,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang='en' className={cn('dark scrollbar-none', fontSans.variable, fontMono.variable)}>
       <head />
-      <body className='text-black dark:text-white dark:bg-[#111010] bg-white antialiased max-w-2xl mb-40 flex flex-col md:flex-row mx-4 mt-8 lg:mx-auto'>
+      <body className='text-black dark:text-white dark:bg-[#111010] selection:bg-white selection:text-[#111010] bg-white antialiased max-w-2xl mb-40 flex flex-col md:flex-row mx-4 mt-8 lg:mx-auto'>
         <Background />
         <main className='flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0'>
           <MainNavigation />

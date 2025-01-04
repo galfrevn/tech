@@ -26,7 +26,7 @@ export default function Home() {
 
   return (
     <section>
-      <Image src='/images/avatar.webp' alt='Valentín Galfré' width={72} height={72} className='rounded-full mb-8' />
+      <Image src='/images/avatar.webp' alt='Valentín Galfré' width={72} height={72} className='rounded-full select-none mb-8' />
 
       <div className='flex items-center gap-4 mb-8'>
         <h1 className='text-2xl font-medium tracking-tighter'>hey, I&apos;m Valentín Galfré</h1>
