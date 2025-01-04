@@ -22,7 +22,9 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   }
 
   let { title, publishedAt: publishedTime, summary: description, image } = post.metadata;
-  let ogImage = image ? `https://galfrevn.com${image}` : `https://galfrevn.com/og?title=${title}`;
+  let ogImage = image 
+    ? `https://galfrevn.com${image}` 
+    : `https://galfrevn.com/og?title=${encodeURIComponent(title)}`;
 
   return {
     title,
