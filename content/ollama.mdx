@@ -58,7 +58,7 @@ This script will download and install Ollama. Once done, test the installation w
 After installation, running your first model in Ollama is an exciting step toward leveraging the power of local AI. The process begins with fetching a model such as Llama by entering the command:
 
 ```bash
-ollama pull llama3.2
+ollama pull llama3.
 ```
 
 This downloads the model and prepares it for interaction on your local machine. Once downloaded, you can initiate an interactive session by running:
@@ -76,10 +76,10 @@ The immediate feedback loop not only provides insights into the model’s behavi
 
 ## Customizing your LLM
 
-Ollama stands out for its flexibility in customizing LLMs to align with specific project requirements. Central to this customization is the Modelfile, a feature akin to Dockerfiles, which allows developers to define the behavior and parameters of their models. For instance, consider a scenario where you want to adjust the creativity of Llama2 by setting its temperature parameter to 0.7 while also programming it with a predefined system message. This can be achieved by creating a Modelfile with the following configuration:
+Ollama stands out for its flexibility in customizing LLMs to align with specific project requirements. Central to this customization is the Modelfile, a feature akin to Dockerfiles, which allows developers to define the behavior and parameters of their models. For instance, consider a scenario where you want to adjust the creativity of Llama3.2 by setting its temperature parameter to 0.7 while also programming it with a predefined system message. This can be achieved by creating a Modelfile with the following configuration:
 
 ```plaintext
-FROM llama2
+FROM llama3.2
 PARAMETER temperature 0.7
 SYSTEM "You are a helpful assistant."
 ```
@@ -156,7 +156,7 @@ const response = await ollama.chat({
 console.log(response.message.content);
 ```
 
-In this example, we import the Ollama library and use the chat method to send a message to the 'llama3.1' model. The response from the model is then logged to the console. 
+In this example, we import the Ollama library and use the chat method to send a message to the 'llama3.2' model. The response from the model is then logged to the console. 
 By incorporating the Ollama JavaScript library, developers can efficiently manage and deploy large language models within their applications, enhancing functionality and user experience.
 
 ## Optimizing performance and ensuring security
@@ -185,7 +185,7 @@ Ollama seamlessly integrates with modern development tools, enhancing productivi
 
 ```json
 {
-  "model": "llama2",
+  "model": "llama3.2",
   "prompt": "Generate documentation for the following code snippet:\n\nfunction add(a, b) { return a + b; }"
 }
 ```
@@ -194,7 +194,7 @@ can provide detailed, AI-generated documentation for your code. In CI/CD pipelin
 
 ```bash
 curl http://localhost:11434/api/generate \
--d '{ "model": "llama2", "prompt": "Write unit tests for a function that adds two numbers." }'
+-d '{ "model": "llama3.2", "prompt": "Write unit tests for a function that adds two numbers." }'
 ```
 
 These integrations not only save time but also improve the quality and consistency of software development projects. By embedding Ollama into your development environment, you can harness the power of AI to tackle complex challenges with ease.
