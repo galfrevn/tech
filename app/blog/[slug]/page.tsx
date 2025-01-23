@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   }
 
   let { title, publishedAt: publishedTime, summary: description, image } = post.metadata;
-  let ogImage = 'https://www.galfrevn.com/images/avatar.webp'
+  let ogImage = image || 'https://www.galfrevn.com/images/avatar.webp'
 
   return {
     title,
